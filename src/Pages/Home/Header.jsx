@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Swal from "sweetalert2";
+import { GiArrowWings } from "react-icons/gi";
 
 const Header = () => {
   const { user, logOut } = useContext(AuthContext);
@@ -24,8 +25,8 @@ const Header = () => {
       });
   };
   return (
-    <div>
-      <div className="navbar bg-base-100">
+    <div className="">
+      <div className="navbar bg-base-100 fixed top-0 z-20">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -49,46 +50,34 @@ const Header = () => {
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-                <a>Item 1</a>
+                <NavLink>Browse</NavLink>
               </li>
               <li>
-                <a>Parent</a>
-                <ul className="p-2">
-                  <li>
-                    <a>Submenu 1</a>
-                  </li>
-                  <li>
-                    <a>Submenu 2</a>
-                  </li>
-                </ul>
+                <NavLink>Manage</NavLink>
               </li>
               <li>
-                <a>Item 3</a>
+                <NavLink>Groups</NavLink>
               </li>
             </ul>
           </div>
-          <Link to="/" className="btn btn-ghost text-xl">daisyUI</Link>
+          <Link to="/" className="btn btn-ghost text-xl ">
+            <span className="flex items-center justify-center gap-2 text-blue-500 text-4xl">
+              {" "}
+              <GiArrowWings />
+              <h1 className="text-black text-xl italic">Hyperss</h1>
+            </span>
+          </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">
+          <ul className="menu menu-horizontal px-1 space-x-2">
             <li>
-              <a>Item 1</a>
+              <NavLink>Browse</NavLink>
             </li>
             <li>
-              <details>
-                <summary>Parent</summary>
-                <ul className="p-2">
-                  <li>
-                    <a>Submenu 1</a>
-                  </li>
-                  <li>
-                    <a>Submenu 2</a>
-                  </li>
-                </ul>
-              </details>
+              <NavLink>Manage</NavLink>
             </li>
             <li>
-              <a>Item 3</a>
+              <NavLink>Groups</NavLink>
             </li>
           </ul>
         </div>
@@ -102,6 +91,7 @@ const Header = () => {
               >
                 <div className="w-10 rounded-full">
                   <img
+                    referrerPolicy="no-referrer"
                     alt="Tailwind CSS Navbar component"
                     src={user?.photoURL}
                   />
@@ -118,7 +108,13 @@ const Header = () => {
                   </a>
                 </li>
                 <li>
-                  <a>Settings</a>
+                  <Link to={"/addjob"}>Add Jobs</Link>
+                </li>
+                <li>
+                  <Link to="/myjobs">My Jobs</Link>
+                </li>
+                <li>
+                  <Link to="/mybids">My Bids</Link>
                 </li>
                 <li>
                   <a onClick={handleLogout}>Logout</a>
