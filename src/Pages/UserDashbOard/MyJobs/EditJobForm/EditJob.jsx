@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 import Swal from "sweetalert2";
+import { useMutation } from "@tanstack/react-query";
 
 const EditJob = ({ currentJob, refetch, onCloseModal }) => {
   const [startDate, setStartDate] = useState(new Date());
@@ -15,6 +16,22 @@ const EditJob = ({ currentJob, refetch, onCloseModal }) => {
     formState: { errors },
   } = useForm();
 
+  const { mutateAsync } = useMutation({
+    mutationFn: async ({ id, updateInfo }) => {
+      const response = await axiosPublic.put(`/alljobs/${id}`, updateInfo);
+      console.log(response);
+    },
+    onSuccess: () => {
+      console.log("data updated");
+      refetch();
+      onCloseModal();
+      Swal.fire({
+        icon: "success",
+        title: "Edited Done Successfully...",
+      });
+    },
+  });
+
   const { jobName, minPrice, maxPrice, jobDescription } = currentJob || {};
 
   const onSubmit = async (data) => {
@@ -26,16 +43,15 @@ const EditJob = ({ currentJob, refetch, onCloseModal }) => {
     const id = currentJob?._id;
 
     try {
-      const response = await axiosPublic.put(`/alljobs/${id}`, updateInfo);
-
-      if (response.data.modifiedCount === 1) {
-        refetch();
-        onCloseModal();
-        Swal.fire({
-          icon: "success",
-          title: "Edited Done Successfully...",
-        });
-      }
+      await mutateAsync({ id, updateInfo });
+      // if (response.data.modifiedCount === 1) {
+      //   refetch();
+      //   onCloseModal();
+      //   Swal.fire({
+      //     icon: "success",
+      //     title: "Edited Done Successfully...",
+      //   });
+      // }
     } catch (error) {
       console.log(error.message);
     }

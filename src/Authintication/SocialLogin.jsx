@@ -4,15 +4,24 @@ import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from "../Provider/AuthProvider";
 import Swal from "sweetalert2";
 import { useLocation, useNavigate } from "react-router-dom";
+import useAxiosPublic from "../Hooks/useAxiosPublic";
 
 const SocialLogin = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { handleGoogle, handleGithub } = useContext(AuthContext);
-  const googleLogIn = () => {
+  const axiosPublic = useAxiosPublic();
+  const googleLogIn = async () => {
     handleGoogle()
-      .then((result) => {
+      .then(async (result) => {
         navigate(navigate?.state ? navigate?.state : "/");
+        const email = result?.user?.email;
+        const response = await axiosPublic.post(
+          "/jwt",
+          { email },
+          { withCredentials: true }
+        );
+        console.log(response);
         Swal.fire({
           icon: "success",
           title: "Success",

@@ -40,7 +40,7 @@ const ApplyJob = ({ card }) => {
       return Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Your Price should be Must smaller than Maximum Price",
+        text: "You can Not Apply this job as you are Job owner, please try different one!",
       });
     }
     const comment = data.comment;

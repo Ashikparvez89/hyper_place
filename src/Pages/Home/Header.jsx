@@ -3,12 +3,19 @@ import { AuthContext } from "../../Provider/AuthProvider";
 import { Link, NavLink } from "react-router-dom";
 import Swal from "sweetalert2";
 import { GiArrowWings } from "react-icons/gi";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const Header = () => {
   const { user, logOut } = useContext(AuthContext);
+  const axiosPublic = useAxiosPublic();
 
-  const handleLogout = () => {
-    logOut()
+  const handleLogout = async () => {
+    logOut();
+    const { data } = await axiosPublic.get("/logout", {
+      withCredentials: true,
+    });
+    console
+      .log(data)
       .then((result) => {
         Swal.fire({
           icon: "success",
@@ -115,6 +122,9 @@ const Header = () => {
                 </li>
                 <li>
                   <Link to="/mybids">My Bids</Link>
+                </li>
+                <li>
+                  <Link to="/bidreq">Bid Requests</Link>
                 </li>
                 <li>
                   <a onClick={handleLogout}>Logout</a>

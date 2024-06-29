@@ -8,7 +8,6 @@ import Card from "../../Components/Card";
 
 const JobTab = () => {
   const [alljobs] = useAllJobs();
-  console.log(alljobs);
 
   const webJobs = alljobs.filter((jobs) => jobs.category === "web");
   const graficsJobs = alljobs.filter((jobs) => jobs.category === "graphics");
@@ -16,7 +15,7 @@ const JobTab = () => {
   const digitalMarketing = alljobs.filter(
     (jobs) => jobs.category === "digitalMarketing"
   );
-  console.log(webJobs);
+
   return (
     <div>
       <div className="">

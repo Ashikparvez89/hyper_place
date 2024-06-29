@@ -8,6 +8,8 @@ import CardDetails from "../Components/CardDetails";
 import AddJob from "../Pages/UserDashbOard/AddJob/AddJob";
 import MyJobs from "../Pages/UserDashbOard/MyJobs/MyJobs";
 import MyBids from "../Pages/UserDashbOard/MyBids/MyBids";
+import Private from "../Provider/Private";
+import BidRequests from "../Pages/UserDashbOard/BidRequests/BidRequests";
 
 export const Router = createBrowserRouter([
   {
@@ -32,19 +34,43 @@ export const Router = createBrowserRouter([
       },
       {
         path: "/jobs/:id",
-        element: <CardDetails></CardDetails>,
+        element: (
+          <Private>
+            <CardDetails></CardDetails>,
+          </Private>
+        ),
       },
       {
         path: "/addjob",
-        element: <AddJob></AddJob>,
+        element: (
+          <Private>
+            <AddJob></AddJob>
+          </Private>
+        ),
       },
       {
         path: "/myjobs",
-        element: <MyJobs></MyJobs>,
+        element: (
+          <Private>
+            <MyJobs></MyJobs>
+          </Private>
+        ),
       },
       {
         path: "/mybids",
-        element: <MyBids></MyBids>,
+        element: (
+          <Private>
+            <MyBids></MyBids>
+          </Private>
+        ),
+      },
+      {
+        path: "/bidreq",
+        element: (
+          <Private>
+            <BidRequests></BidRequests>
+          </Private>
+        ),
       },
     ],
   },
