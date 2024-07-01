@@ -1,13 +1,16 @@
 import React, { useContext } from "react";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const MyBids = () => {
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
   const { user } = useContext(AuthContext);
+
+  const queryClient = useQueryClient();
   const email = user?.email;
 
   const { data, isLoading, isError, refetch } = useQuery({
@@ -17,6 +20,22 @@ const MyBids = () => {
         withCredentials: true,
       });
       return res.data;
+    },
+  });
+
+  const { mutateAsync } = useMutation({
+    mutationFn: async (id) => {
+      const res = await axiosPublic.delete(`/mybids/${id}`);
+      console.log(res.data);
+    },
+    onSuccess: () => {
+      Swal.fire({
+        title: "Deleted!",
+        text: "Your file has been deleted.",
+        icon: "success",
+      });
+      // refetch();
+      queryClient.invalidateQueries({ queryKey: ["biddata"] });
     },
   });
 
@@ -37,6 +56,32 @@ const MyBids = () => {
     const response = await axiosPublic.patch(`/bidreq/${id}`, { status });
     refetch();
     console.log(response);
+  };
+
+  const handleDelete = async (id) => {
+    console.log("delete Id is", id);
+    const { value: confirmed } = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+    if (confirmed) {
+      try {
+        await mutateAsync(id);
+      } catch (error) {
+        // Handle any error that occurs during deletion
+        Swal.fire({
+          title: "Error",
+          text: "An error occurred while deleting the file.",
+          icon: "error",
+        });
+        console.error("Error deleting file:", error);
+      }
+    }
   };
   return (
     <div className="mt-36 w-[90%] mx-auto">
@@ -69,13 +114,18 @@ const MyBids = () => {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Action
             </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Delete
+            </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {data.map((job) => (
             <tr key={job._id}>
               <td className="px-6 py-4 whitespace-nowrap">{job.jobName}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{job.authourEmail}</td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                {job.authourEmail}
+              </td>
               <td className="px-6 py-4 whitespace-nowrap">{job.price}</td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <span
@@ -107,9 +157,18 @@ const MyBids = () => {
                 <button
                   onClick={() => handleStatus(job._id, job.status, "complated")}
                   disabled={job.status !== "Inprogress"}
-                  className="ml-2 px-4 py-2 font-medium text-white bg-red-600 rounded-md hover:bg-red-500 focus:outline-none focus:shadow-outline-red active:bg-red-600 transition duration-150 ease-in-out"
+                  className="ml-2 px-4 py-2 font-medium text-white bg-green-600 rounded-md hover:bg-red-500 focus:outline-none focus:shadow-outline-red active:bg-red-600 transition duration-150 ease-in-out"
                 >
                   submit
+                </button>
+              </td>
+              <td>
+                <button
+                  onClick={() => handleDelete(job.jobid)}
+                  disabled={job.status !== "canceled"}
+                  className="ml-2 px-4 py-2 font-medium text-white bg-red-600 rounded-md hover:bg-red-500 focus:outline-none focus:shadow-outline-red active:bg-red-600 transition duration-150 ease-in-out"
+                >
+                  Delete
                 </button>
               </td>
             </tr>

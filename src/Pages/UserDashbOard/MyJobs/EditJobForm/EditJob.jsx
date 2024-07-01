@@ -3,11 +3,12 @@ import DatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 import Swal from "sweetalert2";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const EditJob = ({ currentJob, refetch, onCloseModal }) => {
   const [startDate, setStartDate] = useState(new Date());
   const axiosPublic = useAxiosPublic();
+  const queryClient = useQueryClient();
 
   //   useEffect(() => {}, [currentJob]);
   const {
@@ -23,12 +24,13 @@ const EditJob = ({ currentJob, refetch, onCloseModal }) => {
     },
     onSuccess: () => {
       console.log("data updated");
-      refetch();
+      // refetch();
       onCloseModal();
       Swal.fire({
         icon: "success",
         title: "Edited Done Successfully...",
       });
+      queryClient.invalidateQueries({ queryKey: ["myjobs"] });
     },
   });
 
@@ -44,14 +46,6 @@ const EditJob = ({ currentJob, refetch, onCloseModal }) => {
 
     try {
       await mutateAsync({ id, updateInfo });
-      // if (response.data.modifiedCount === 1) {
-      //   refetch();
-      //   onCloseModal();
-      //   Swal.fire({
-      //     icon: "success",
-      //     title: "Edited Done Successfully...",
-      //   });
-      // }
     } catch (error) {
       console.log(error.message);
     }

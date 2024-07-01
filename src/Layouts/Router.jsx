@@ -10,6 +10,7 @@ import MyJobs from "../Pages/UserDashbOard/MyJobs/MyJobs";
 import MyBids from "../Pages/UserDashbOard/MyBids/MyBids";
 import Private from "../Provider/Private";
 import BidRequests from "../Pages/UserDashbOard/BidRequests/BidRequests";
+import Alljobs from "../Pages/AllJobs/Alljobs";
 
 export const Router = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ export const Router = createBrowserRouter([
             <BidRequests></BidRequests>
           </Private>
         ),
+      },
+      {
+        path: "/alljobs",
+        element: <Alljobs></Alljobs>,
       },
     ],
   },

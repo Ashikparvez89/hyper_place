@@ -82,7 +82,12 @@ const ApplyJob = ({ card }) => {
         });
       }
     } catch (err) {
-      console.log(err.message);
+      Swal.fire({
+        icon: "error",
+        title: "Failed",
+        text: err.response.data.message,
+      });
+      console.log(err.response.data.message);
     }
   };
 

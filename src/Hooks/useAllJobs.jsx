@@ -5,7 +5,7 @@ const useAllJobs = () => {
   const [alljobs, setAlljobs] = useState([]);
   useEffect(() => {
     const fetchedJobs = async () => {
-      const response = await axios.get("http://localhost:5000/alljobs");
+      const response = await axios.get("https://hypers-server.vercel.app/alljobs");
       setAlljobs(response.data);
     };
     fetchedJobs();
